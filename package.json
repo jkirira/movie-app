@@ -1,0 +1,40 @@
+{
+  "name": "movie-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "express": "^4.17.2",
+    "html-loader": "^3.1.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.5.3",
+    "postcss": "^8.4.5",
+    "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.2.3",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.16",
+    "vue-loader": "^15.9.8",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkirira/movie-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jkirira/movie-app/issues"
+  },
+  "homepage": "https://github.com/jkirira/movie-app#readme"
+}
