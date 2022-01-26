@@ -1,8 +1,9 @@
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
+
+    entry: './main.js',
 
     module: {
         rules: [
@@ -36,9 +37,10 @@ module.exports = {
     },
     plugins: [
         new VueLoaderPlugin(),
-        new HtmlWebpackPlugin(),
-        new MiniCssExtractPlugin()
+        new HtmlWebpackPlugin({
+            template: "./src/index.html",
+        }),
         //other plugins
     ],
-    ...
+
 }
