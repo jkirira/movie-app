@@ -2,10 +2,11 @@ module.exports = {
   enabled: true,
   purge: {
     content: [
-      './src/**/*.html',
-      './src/**/*.vue',
-      './main.js',
-      './app.vue'
+      './client/src/**/*.html',
+      './client/src/**/*.vue',
+      './client/app.vue',
+      './main.js'
+
     ],
   },
 
