@@ -31,13 +31,13 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
     "dev": "webpack --mode development",
     "serve": "webpack serve --mode development",
     "devnserve": "webpack --mode development && webpack serve --mode development",
     "help": "webpack -h",
     "postinstall": "npm run build",
     "start": "node server.js"
-
   },
   "repository": {
     "type": "git",
