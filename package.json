@@ -6,6 +6,7 @@
   "dependencies": {
     "autoprefixer": "^9.8.8",
     "postcss": "^7.0.39",
+    "serve-static": "^1.14.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
     "vue": "^2.6.14",
     "vue-router": "^3.5.3"
@@ -33,7 +34,10 @@
     "dev": "webpack --mode development",
     "serve": "webpack serve --mode development",
     "devnserve": "webpack --mode development && webpack serve --mode development",
-    "help": "webpack -h"
+    "help": "webpack -h",
+    "postinstall": "npm run build",
+    "start": "node server.js"
+
   },
   "repository": {
     "type": "git",

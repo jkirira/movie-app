@@ -1,8 +1,7 @@
 <template>
-    <div id="app" class="bg-indigo-500 text-red-600	">
+    <div id="app" class="bg-indigo-500 text-red-600	w-full d-flex">
 
-    Hello World
-
+        <h2 class="text-center w-full">Coming Soon...</h2>
 
     </div>
 </template>
