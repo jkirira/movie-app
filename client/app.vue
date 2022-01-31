@@ -1,16 +1,23 @@
 <template>
-    <div id="app" class="bg-indigo-500 text-red-600	w-full d-flex">
+    <div id="app">
 
-        <h2 class="text-center w-full">Coming Soon...</h2>
+      <header-component></header-component>
+
+      <router-view></router-view>
 
     </div>
 </template>
 
 
 <script>
+import HeaderComponent from './src/components/TheHeader.vue'
 
 export default {
-  name: "App"
+  name: "App",
+  components: {
+    HeaderComponent
+  },
+
 }
 
 

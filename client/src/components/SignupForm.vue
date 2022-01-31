@@ -9,18 +9,18 @@
       <form action="" method="POST" id="form">
         <div class="mb-6">
           <label for="name" class="block mb-2 text-sm text-gray-600">UserName</label>
-          <input type="text" name="name" id="name" placeholder="Username" value="" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 " />
+          <input type="text" name="name" id="name" placeholder="Username" value="" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-100 focus:border-green-300 " />
         </div>
         <div class="mb-6">
           <label for="email" class="block mb-2 text-sm text-gray-600">Email Address</label>
-          <input type="email" name="email" id="email" placeholder="email" value="" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 " />
+          <input type="email" name="email" id="email" placeholder="Email" value="" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-100 focus:border-green-300 " />
         </div>
         <div class="mb-6">
           <label for="password" class="text-sm text-gray-600">Password</label>
-          <input type="text" name="password" id="password" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 " />
+          <input type="text" name="password" id="password" required class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-100 focus:border-green-300 " />
         </div>
         <div class="mb-6">
-          <button type="submit" class="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none">Sign Up</button>
+          <button type="submit" class="w-full px-3 py-4 text-white bg-green-500 rounded-md focus:bg-green-600 focus:outline-none">Sign Up</button>
         </div>
       </form>
     </div>
@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: "SignupForm.vue"
+  name: "SignupForm"
 }
 </script>
 

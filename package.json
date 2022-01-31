@@ -5,10 +5,12 @@
   "main": "main.js",
   "dependencies": {
     "autoprefixer": "^9.8.8",
+    "axios": "^0.25.0",
     "express": "^4.17.2",
     "postcss": "^7.0.39",
     "serve-static": "^1.14.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "uuid": "^8.3.2",
     "vue": "^2.6.14",
     "vue-router": "^3.5.3"
   },
@@ -16,6 +18,7 @@
     "css-loader": "^6.5.1",
     "html-loader": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "jsonwebtoken": "^8.5.1",
     "mini-css-extract-plugin": "^2.5.3",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.2.1",
