@@ -15,6 +15,10 @@
           <router-link to="/signup">Sign Up</router-link>
         </div>
 
+          <div class="p-6" v-if="loggedIn">
+              <p @click="logout">Logout</p>
+          </div>
+
       </div>
 
   <!--    <router-link >Logout</router-link>-->
@@ -24,7 +28,31 @@
 
 <script>
 export default {
-  name: "HeaderComponent"
+    name: "HeaderComponent",
+    data(){
+        return{
+            logged_in: window.localStorage.getItem('movie_token')
+        }
+    },
+    computed: {
+        loggedIn(){
+            return this.logged_in
+        }
+    },
+    methods: {
+        logout(){
+            if(window.localStorage.getItem('movie_token') ){
+                window.localStorage.removeItem('movie_token');
+                console.log('Logged out')
+                console.log(window.localStorage.getItem('movie_token'))
+                window.location = '/#/login'
+                return true;
+            } else {
+                console.log("Error Logging Out")
+                return false;
+            }
+        }
+    }
 }
 </script>
 

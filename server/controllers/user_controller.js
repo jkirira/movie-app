@@ -1,53 +1,62 @@
-const User = require('../models/user_model');
+const User = require('../models/objects/user_model');
+const bcrypt = require('bcrypt')
+const UserModel = require('../models/sequelize/UserModel.js')
 const jwt = require('jsonwebtoken')
 
 var users = Array();
 
-cors_url = 'http://localhost:8084';
+async function register(req, res){
 
-function register(req, res){
-
-    res.set('Access-Control-Allow-Origin', cors_url)
-    res.set('Access-Control-Allow-Methods: POST');
-
-    if( req.body.username == '' || req.body.password == '' ) {
+    if( req.body.username == '' || req.body.email == ''|| req.body.password == '' ) {
         res.status(400).json({'error': "please fill all values"})
     }
 
-    let userExists = users.find((user) => {
-            user.username = req.body.username
-    })
+    let user =  await UserModel.findOne( {where: { email: req.body.email } })
 
-    if (userExists) {
-        res.status(400).json({'error': "That username is taken"})
+    if (user) {
+        console.log(user)
+        res.status(400).json({'error': "That email already exists"})
     }
 
-    let u = new User(req.body.username, req.body.password)
-    users.unshift(u)
-    res.status(201).json({'success': "User created"})
+    let hashed_password = await bcrypt.hash(req.body.password, 10)
+    console.log("hello")
+
+    await UserModel.create({
+        username: req.body.username,
+        email: req.body.email,
+        password: hashed_password,
+    })
+        .then((result) => {
+            return res.json({ message: "User created successfully!" });
+        })
+        .catch((error) => {
+            console.log(error);
+            return res.json({ message: "Unable to create a record!", error: error.response.data });
+        });
+
 }
 
 
-function login(req, res){
+async function login(req, res){
+    console.log(req.body.email)
 
-    res.set('Access-Control-Allow-Origin', cors_url)
-    res.set('Access-Control-Allow-Methods: POST');
-
-    if( req.body.username == '' || req.body.password == '' ) {
+    if( req.body.email == '' || req.body.password == '' ) {
         res.status(400).json({'error': "please fill all values"})
     }
 
-    let userExists = users.find((user) => {
-        user.username = req.body.username
-    })
+    let user =  await UserModel.findOne( {where: { email: req.body.email } })
 
-    if (!userExists) {
+    if ( !user ) {
         res.status(404).json({'error': "User not Found"})
     }
 
-    if(userExists.password == req.body.password){
-        let Token = jwt.sign(userExists, secret)
-        res.status(200).json( {username: userExists.username, token: Token} )
+    const password_match = await bcrypt.compare(req.body.password, user.password);
+    if (password_match) {
+        let Token = jwt.sign({
+            'email': user.email,
+            'id': user.id.toString()
+        }, "secret")
+        res.status(200).json( {'success': "success", 'username': user.username, 'token': Token} )
     } else {
         res.status(404).json({'error': "User not Found"})
     }
@@ -55,10 +64,6 @@ function login(req, res){
 }
 
 function logout(req, res){
-
-    res.set('Access-Control-Allow-Origin', cors_url)
-    res.set('Access-Control-Allow-Methods: POST');
-
 
     let userExists = users.find((user) => {
         user.username = req.body.username

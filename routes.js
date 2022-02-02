@@ -19,4 +19,12 @@ const router = new VueRouter({
 })
 
 
+
+router.beforeEach((to, from, next) => {
+    let token = localStorage.getItem('movie_token');
+    if (to.name !== 'login' && !token) next({ name: 'login' })
+    else next()
+})
+
+
 export default router;

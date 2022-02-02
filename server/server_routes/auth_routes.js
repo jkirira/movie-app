@@ -9,5 +9,4 @@ routes = [
     router.post('/logout', logout)
 ]
 
-
 module.exports = routes

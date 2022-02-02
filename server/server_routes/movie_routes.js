@@ -1,4 +1,4 @@
-
+const { getMovies, getMovieByName, getMovieById, addMovie, updateMovie, deleteMovie } = require('../controllers/movie_controller.js')
 const express = require('express')
 
 const router = express.Router()
@@ -7,17 +7,14 @@ const router = express.Router()
 routes = [
 
         router.get('/', getMovies),
-        router.get('/:movieId', getMoviebyId),
-        router.get('/:movieName', getMoviebyName),
-        router.get('/search/name=:movieName', searchByName),
-        router.get('/search/genre=:Genre', searchGenre),
-
+        router.get('/:movie_id', getMovieById),
+        router.get('/:movie_name', getMovieByName),
 
         router.post('/', addMovie),
 
-        router.put('/:movieId', updateMovie),
+        router.put('/:movie_id', updateMovie),
 
-        router.delete('/:movieId', deleteMovie),
+        router.delete('/:movie_id', deleteMovie),
 
 ]
 
