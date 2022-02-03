@@ -21,15 +21,11 @@ const User = sequelize.define(
         },
         password: DataTypes.STRING,
         is_admin: DataTypes.BOOLEAN,
-        date_created: DataTypes.DATE,
-        date_updated: DataTypes.DATE
     },
     {
         sequelize,
         modelName: 'User',
         tableName: 'users',
-        createdAt: 'date_created',
-        updatedAt: 'date_updated',
         underscore: true,
     }
 );

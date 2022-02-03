@@ -1,9 +1,13 @@
 const express = require('express');
 const auth_routes = require('../server_routes/auth_routes')
-const movie_routes = require('../server_routes/movie_routes.js')
+const show_routes = require('../server_routes/show_routes.js')
+const admin_routes = require('../server_routes/admin_routes.js')
+const subscription_routes = require('../server_routes/subscription_routes.js')
 const sequelize = require("../config/database.js");
 const UserModel = require('../models/sequelize/UserModel.js');
-const MovieModel = require('../models/sequelize/MovieModel.js');
+const TvShowModel = require('../models/sequelize/TvShowModel.js');
+const SubscriptionModel = require('../models/sequelize/SubscriptionModel.js')
+const FavouriteModel = require('../models/sequelize/FavouriteModel.js')
 const cors = require("cors");
 const corsOptions ={
     origin:'*',
@@ -20,7 +24,11 @@ app.use(express.json());
 
 app.use('/api/v1/user', auth_routes)
 
-app.use('/api/v1/movies', movie_routes)
+app.use('/api/v1/admin', admin_routes)
+
+app.use('/api/v1/shows', show_routes)
+
+app.use('/api/v1/subscriptions', subscription_routes)
 
 const initApp = async () => {
     console.log("Testing the database connection..");
@@ -30,7 +38,9 @@ const initApp = async () => {
         console.log("Connection has been established successfully.");
 
         await UserModel.sync({ alter: true });
-        await MovieModel.sync({ alter: true });
+        await TvShowModel.sync({ alter: true });
+        await SubscriptionModel.sync( {alter: true} )
+        await FavouriteModel.sync( {force: true} )
 
         app.listen(4000, ()=>{
             console.log('Application Listening');

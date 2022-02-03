@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken')
 var users = Array();
 
 async function register(req, res){
+    if( !req.body.username || !req.body.email || !req.body.password ) {
+        res.status(400).json({'error': "cannot enter null values"})
+    }
 
     if( req.body.username == '' || req.body.email == ''|| req.body.password == '' ) {
         res.status(400).json({'error': "please fill all values"})
@@ -38,11 +41,15 @@ async function register(req, res){
 
 
 async function login(req, res){
-    console.log(req.body.email)
+
+    if( !req.body.email || !req.body.password ) {
+        res.status(400).json({'error': "cannot enter null values"})
+    }
 
     if( req.body.email == '' || req.body.password == '' ) {
         res.status(400).json({'error': "please fill all values"})
     }
+    console.log(req.body.email)
 
     let user =  await UserModel.findOne( {where: { email: req.body.email } })
 
