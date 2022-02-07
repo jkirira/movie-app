@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-md mx-auto my-10 bg-white p-5 rounded-md shadow-sm border border-gray-700">
+  <div class="mx-5 max-w-md my-10 lg:mx-auto  bg-white p-5 rounded-md shadow-sm border border-gray-700">
 
     <div class="text-center">
       <h1 class="my-3 text-3xl font-semibold text-gray-700">Login</h1>

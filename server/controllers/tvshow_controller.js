@@ -1,9 +1,11 @@
-const TvShowModel = require('../models/sequelize/TvShowModel.js')
+const models = require('../models/sequelize/relationships.js')
 
 
 function getMovies(req, res){
 
-    TvShowModel.findAll()
+    models.TvShow.findAll({
+        include: [models.Comment, models.Rating, models.Review]
+    })
         .then((result) => {
             return res.json(result);
         })
@@ -16,7 +18,7 @@ function getMovies(req, res){
 
 async function getMovieById(req, res){
     try{
-        let movie =  await TvShowModel.findOne( {where: { id: req.params.movie_id } })
+        let movie =  await models.TvShow.findOne( {where: { id: req.params.movie_id } })
         res.json(movie);
     } catch(err){
         res.status(404).json({ 'error': 'Movie Not Found',})
@@ -26,7 +28,7 @@ async function getMovieById(req, res){
 
 async function getMovieByName(req, res){
     try{
-        let movie =  await TvShowModel.findOne( {where: { name: req.params.movie_name } })
+        let movie =  await models.TvShow.findOne( {where: { name: req.params.movie_name } })
         res.json(movie);
     } catch(err){
         res.json({ "error": "There was an error", err })
@@ -39,7 +41,11 @@ function addMovie(req, res){
     //     res.status(400).json({ 'error': validateRequest(req.body).error, })
     // }
 
-    TvShowModel.create({
+    if( !req.body.name ) {
+        res.status(500).json({ 'error': "Needs name" })
+    }
+
+    models.TvShow.create({
         name: req.body.name,
         release_date: req.body.release_date,
         runtime: req.body.runtime,
@@ -67,7 +73,7 @@ async function updateMovie(req, res){
     // }
 
     try{
-        let movie =  await TvShowModel.findOne( {where: { id: req.params.movie_id } })
+        let movie =  await models.TvShow.findOne( {where: { id: req.params.movie_id } })
 
         await movie.update(req.body)
         await movie.save();
@@ -84,7 +90,7 @@ async function updateMovie(req, res){
  async function deleteMovie(req, res){
 
     try {
-        let movie =  await TvShowModel.findOne( {where: { id: req.params.movie_id } })
+        let movie =  await models.TvShow.findOne( {where: { id: req.params.movie_id } })
         await movie.destroy()
         res.json({ "success": "Movie deleted" })
     } catch (err){

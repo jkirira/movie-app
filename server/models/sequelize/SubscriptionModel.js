@@ -1,8 +1,9 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const TvShow = require('./TvShowModel.js')
 
 const sequelize = require("../../config/database.js");
-const User = require("../sequelize/UserModel.js");
-const TvShow = require("../sequelize/TvShowModel.js");
+// const User = require("../sequelize/UserModel.js");
+// const TvShow = require("../sequelize/TvShowModel.js");
 
 const Subscription = sequelize.define(
     "Subscription",
@@ -13,26 +14,16 @@ const Subscription = sequelize.define(
             allowNull: false,
             primaryKey: true,
         },
-        show_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: TvShow,
-                key: 'id',
-            }
-        },
-        user_id: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: User,
-                key: 'id',
-            }
-        },
-    },{
+    },
+    {
         sequelize,
         modelName: 'Subscription',
         tableName: 'subscriptions',
         underscore: true,
     }
-)
+);
+
+// Subscription.belongsTo(User)
+
 
 module.exports = Subscription

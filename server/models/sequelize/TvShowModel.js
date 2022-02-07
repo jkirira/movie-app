@@ -15,11 +15,11 @@ const TvShow = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        type:DataTypes.STRING,
         release_date: DataTypes.DATE,
         trailer_link: DataTypes.STRING,
         description: DataTypes.STRING,
         poster: DataTypes.STRING,
+        genre: DataTypes.STRING,
     },
     {
         sequelize,
@@ -28,6 +28,7 @@ const TvShow = sequelize.define(
         underscore: true,
     }
 );
+
 
 /**
  * Export the model, so that it can be used in any

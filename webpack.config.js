@@ -1,5 +1,6 @@
 const { VueLoaderPlugin } = require('vue-loader')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
 
@@ -35,12 +36,26 @@ module.exports = {
             //other rules
         ]
     },
+    devServer: {
+        hot: true
+    },
     plugins: [
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             template: "./client/src/index.html",
         }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
         //other plugins
     ],
+    resolve: {
+        extensions: [ '.ts', '.js' ],
+        fallback: {
+            crypto: require.resolve('crypto-browserify'),
+            "stream": require.resolve('stream-browserify'),
+            "buffer": require.resolve("buffer")
+        },
+    },
 
 }

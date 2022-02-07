@@ -7,11 +7,10 @@ const jwt = require("jsonwebtoken")
 async function adminLogin(req, res){
     try {
 
-
         let user = await UserModel.findOne({ where:{ email: req.body.email }})
 
         if( !user ){
-            return res.json({"Error": "An error ocurred" })
+            return res.json({"Error": "An error occurred" })
         }
 
         if( !user.is_admin ){

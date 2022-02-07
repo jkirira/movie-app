@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
+
 const sequelize = require("../../config/database.js");
 
 const User = sequelize.define(
@@ -29,6 +30,7 @@ const User = sequelize.define(
         underscore: true,
     }
 );
+
 
 /**
  * Export the model, so that it can be used in any
