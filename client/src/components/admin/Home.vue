@@ -5,7 +5,6 @@
             <!-- Component Start -->
             <div id="sidebar" class="sidebar flex-col w-56 border-r border-gray-300">
                 <div class="flex items-center justify-between w-full h-16 px-4 border-b border-gray-300 hover:bg-gray-300">
-
                 </div>
                 <div class="flex flex-col flex-grow p-4 overflow-auto">
                     <a class="flex items-center flex-shrink-0 h-10 px-2 text-sm font-medium rounded hover:bg-gray-300" href="#">
@@ -34,7 +33,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex-grow p-6 mt-8 overflow-auto">
+                <div class="flex-grow p-6 mt-8 overflow-auto w-full">
 
                     <router-view></router-view>
 
@@ -49,6 +48,9 @@
 <script>
 import MovieCard from '../MovieCard.vue'
 export default {
+    data(){
+        return{}
+    },
     mounted() {
         const SideBar = document.getElementById('sidebar')
         const SideBarToggle = document.getElementById('sidebarToggle')
@@ -64,7 +66,7 @@ export default {
         })
     },
     methods: {
-        toggleSideBar(){
+        redirectToActors(){
 
         }
     }

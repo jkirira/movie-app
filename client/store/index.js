@@ -6,21 +6,38 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        token: null,
-        loggedIn: false,
+        user: (window.localStorage.getItem('user')) ? window.localStorage.getItem('user') : {} ,
+        token: (window.localStorage.getItem('token')) ? window.localStorage.getItem('token') : null ,
         loading: false,
-        vehicles: []
     },
 
     getters: {
+        getToken(state){
+            return state.token
+        },
+        userDetails(state){
+           return state.user;
+        },
         isLoggedIn(state) {
-            return state.loggedIn;
+            return (state.token) ? true : false;
         },
         isValid(state){
-            return jwt.verify(state.token, state.password)
+            return jwt.verify(state.token, 'secret')
         },
-        getVehicles(state){
-            return state.vehicles
+        isAdmin(state){
+            return state.user.is_admin
+        },
+        userSubscriptions(state){
+            return state.user.Subscriptions
+        },
+        userReviews(state){
+            return state.user.Reviews
+        },
+        userComments(state){
+            return state.user.Comments
+        },
+        userFavourites(state){
+            return state.user.Favourites
         }
     },
 
@@ -29,18 +46,27 @@ const store = new Vuex.Store({
         setToken(state, payload) {
             state.token = payload
         },
+        setUser(state, payload) {
+            state.user = payload
+        },
+        addReview(state, payload) {
+            state.user = payload
+        },
+        addSubscription(state, payload) {
+            state.user.Subscriptions.push(payload)
+        },
+        addComment(state, payload) {
+            state.user = payload
+        },
+        addFavourite(state, payload) {
+            state.user = payload
+        },
         logIn(state){
             state.loggedIn = true
         },
         logOut(state){
             state.loggedIn = false
         },
-        saveVehicles(state, payload){
-            state.vehicles = payload
-        },
-        clearVehicles(state){
-            state.vehicles = []
-        }
 
     },
 
@@ -48,6 +74,9 @@ const store = new Vuex.Store({
     actions: {
         set_token (context, payload) {
             context.commit('setToken', payload)
+        },
+        set_user (context, payload) {
+            context.commit('setUser', payload)
         },
         log_in(context){
             context.commit('logIn')
@@ -60,7 +89,19 @@ const store = new Vuex.Store({
         },
         clear_vehicles(context){
             context.commit('clearVehicles')
-        }
+        },
+        add_review(state, payload) {
+            state.user = payload
+        },
+        add_subscription(state, payload) {
+            state.user = payload
+        },
+        add_comment(state, payload) {
+            state.user = payload
+        },
+        add_favourite(state, payload) {
+            state.user = payload
+        },
     }
 })
 

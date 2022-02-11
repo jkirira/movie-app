@@ -1,12 +1,17 @@
 const models = require('../models/sequelize/relationships.js')
+const { Op } = require("sequelize");
+const path = require("path");
 
 
 function getMovies(req, res){
 
     models.TvShow.findAll({
-        include: [models.Comment, models.Rating, models.Review]
+        order: [
+            ['createdAt', 'DESC']
+        ]
     })
         .then((result) => {
+            console.log(result)
             return res.json(result);
         })
         .catch((error) => {
@@ -16,9 +21,44 @@ function getMovies(req, res){
 }
 
 
-async function getMovieById(req, res){
+function getMovieById(req, res){
+    // console.log(req.params.movie_id)
+    console.log('finding', req.params.movie_id)
+
+    models.TvShow.findOne( {
+            where: { id: req.params.movie_id },
+            include: [ models.Episode, models.Comment, models.Rating, models.Review ],
+        })
+        .then((result) => {
+            console.log("in controller")
+            console.log(result)
+            res.json(result);
+        }).catch((err) => {
+            res.status(404).json({ 'error': 'Movie Not Found', err})
+        })
+
+}
+
+async function getLatestMovies(req, res){
     try{
-        let movie =  await models.TvShow.findOne( {where: { id: req.params.movie_id } })
+        let movie =  await models.TvShow.findAll(
+    {
+                limit: 20,
+                order: [
+                    ['createdAt', 'DESC']
+                ]
+            },
+        )
+        res.json(movie);
+    } catch(err){
+        res.status(404).json({ 'error': 'Movie Not Found',})
+    }
+
+}
+
+async function getRandomMovies(req, res){
+    try{
+        let movie =  await models.TvShow.findAll({ limit: 20, } )
         res.json(movie);
     } catch(err){
         res.status(404).json({ 'error': 'Movie Not Found',})
@@ -28,10 +68,16 @@ async function getMovieById(req, res){
 
 async function getMovieByName(req, res){
     try{
-        let movie =  await models.TvShow.findOne( {where: { name: req.params.movie_name } })
+        let movie =  await models.TvShow.findAll( {
+            where: {
+                name: {
+                    [Op.like]: '%'+ req.params.movie_name+'%'
+                }
+            },
+        })
         res.json(movie);
     } catch(err){
-        res.json({ "error": "There was an error", err })
+        res.json({ "error": "Could not find movie", err })
     }
 }
 
@@ -42,27 +88,37 @@ function addMovie(req, res){
     // }
 
     if( !req.body.name ) {
-        res.status(500).json({ 'error': "Needs name" })
+        res.status(500).json({ 'error': "Needs at least a name" })
     }
+
+    console.log(req.files)
+
+    let image_upload = ''
+    if(req.files){
+        image_upload = (req.files.poster) ? req.files.poster : '';
+    }
+    let slug = Date.now() + '_' + image_upload.name;
+    let save_path = "server/public/" + slug;
 
     models.TvShow.create({
         name: req.body.name,
         release_date: req.body.release_date,
-        runtime: req.body.runtime,
+        genre: req.body.genre,
         trailer_link: req.body.trailer_link,
         description: req.body.description,
-        poster: req.body.poster,
+        poster: (image_upload) ? slug : '../assets/img/default-poster.png',
     })
         .then((result) => {
-            return res.json({
-                message: "Record created successfully!",
-            });
+            if(image_upload) {
+                image_upload.mv(save_path, (err) => {
+                    if (err) { return res.status(500).send(err); }
+                });
+            }
+            return res.json({ message: "Record created successfully!" });
         })
         .catch((error) => {
             console.log(error);
-            return res.json({
-                message: "Unable to create a record!",
-            });
+            return res.json({ message: "Unable to create a record!" });
         });
 }
 
@@ -99,4 +155,4 @@ async function updateMovie(req, res){
 
 }
 
-module.exports = { getMovies, getMovieById, getMovieByName, addMovie, updateMovie, deleteMovie }
+module.exports = { getMovies, getMovieById, getLatestMovies, getRandomMovies, getMovieByName, addMovie, updateMovie, deleteMovie }

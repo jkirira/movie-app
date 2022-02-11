@@ -5,7 +5,7 @@ const { Op } = require("sequelize");
 function getReviews(req, res){
 
     models.Review.findAll({
-        where: { show_id: req.params.show_id }
+        where: { TvShowId: req.params.show_id }
     })
         .then((result) => {
             return res.json(result);
@@ -34,7 +34,7 @@ function addReview(req, res){
     //     res.status(400).json({ 'error': validateRequest(req.body).error, })
     // }
 
-    if( !req.body.text || !req.body.show_id || !req.body.user_id ) {
+    if( !req.body.text || !req.params.show_id || !req.body.user_id ) {
         res.status(500).json({ 'error': "Needs text, show id and user id" })
     }
 
@@ -42,8 +42,8 @@ function addReview(req, res){
 
     models.Review.create({
         text: req.body.text,
-        user_id: req.params.user_id,
-        show_id: req.params.show_id,
+        userId: req.params.user_id,
+        TvShowId: req.params.show_id,
     })
         .then((result) => {
             return res.json({

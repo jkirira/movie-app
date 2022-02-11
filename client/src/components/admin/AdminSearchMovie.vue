@@ -14,47 +14,11 @@
             </div>
         </div>
 
-        <div class="flex justify-center lg:min-h-screen lg:p-10">
+        <div class="flex flex-wrap justify-center lg:min-h-screen lg:p-10">
 
-            <div class="movie-grid grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2 max-w-6xl sm:max-h-6xl">
-                <!-- Tile 1 -->
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
-                <div class=" p-4 h-96 ">
-                    <movie-card></movie-card>
-                </div>
+            <div v-for="(movie, index) in movies" :key="index" class=" p-4 h-96 ">
+                <movie-card :movie="movie" :next="'admin_movie_details'"></movie-card>
             </div>
-
-
-            <!-- Component End  -->
 
         </div>
 
@@ -64,8 +28,17 @@
 
 <script>
 import MovieCard from "../MovieCard.vue";
+import axios from "axios";
 export default {
-    components: {MovieCard}
+    components: {MovieCard},
+    data(){
+        return{
+           movies: ''
+        }
+    },
+    mounted() {
+
+    }
 }
 </script>
 

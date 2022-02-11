@@ -18,7 +18,7 @@ function getSubscriptions(req, res){
 async function getShowSubscriptions(req, res){
     try{
         let subs =  await models.Subscription.findAll( {
-            where: { show_id: req.params.show_id },
+            where: { TvShowId: req.params.show_id },
             include: [models.TvShow, models.User]
         })
         res.json(subs);
@@ -30,7 +30,10 @@ async function getShowSubscriptions(req, res){
 async function getUserSubscriptions(req, res){
     // console.log(req)
     try{
-        let subs =  await models.Subscription.findAll( { where: { user_id: req.params.user_id } })
+        let subs =  await models.Subscription.findAll( {
+            where: { userId: req.params.user_id },
+            include: [models.User, models.TvShow]
+        })
         res.json(subs);
     } catch(err){
         res.json({ "error": "There was an error", err })
@@ -57,29 +60,27 @@ async function addSubscription(req, res){
         res.status(500).json({ 'error': "Needs show id and user id" })
     }
 
+    let sub = ''
     try {
-        let fav = await models.Subscription.findOne( {
+        sub = await models.Subscription.findOne({
             where: {
-                [Op.and]: [
-                    {show_id: req.body.show_id},
-                    {user_id: req.body.user_id},
-                ]
+                TvShowId: req.body.show_id,
+                userId: req.body.user_id,
             }
         })
+        if (sub){ res.status(500).json({message: "Entry already exists"}) }
+    } catch(err) {
+        console.log("new subscription", err)
+    }
 
-        if (fav){ res.status(500).json({message: "Entry already exists"}) }
-
+    try{
         await models.Subscription.create({
-            show_id: req.body.show_id,
-            showId: req.body.show_id,
-            user_id: req.body.user_id,
+            TvShowId: req.body.show_id,
             userId: req.body.user_id
         })
-
-        return res.json({ message: "Added to Subscriptions", });
-
+        return res.status(200).json({ message: "Added to Subscriptions", });
     } catch(err) {
-        res.json({ "error": "There was an error", err })
+        res.status(500).json({ "error": "There was an error", err })
     }
 
 }
@@ -90,10 +91,8 @@ async function removeSubscription(req, res){
     try {
         let subs =  await models.Subscription.findOne( {
             where: {
-                [Op.and]: [
-                    { show_id: req.params.show_id },
-                    { user_id: req.params.user_id }
-                ]
+                TvShowId: req.params.show_id,
+                userId: req.params.user_id
             }
         })
         await subs.destroy()

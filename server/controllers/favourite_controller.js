@@ -4,7 +4,10 @@ const { Op } = require("sequelize");
 
 async function getFavourites(req, res){
     try{
-        let favs =  await models.Favourite.findAll( {where: { user_id: req.params.user_id } })
+        let favs =  await models.Favourite.findAll( {
+            where: { userId: req.params.user_id },
+            include: models.TvShow
+        })
         res.json(favs);
     } catch(err){
         res.json({ "error": "There was an error", err })
@@ -31,29 +34,28 @@ async function addToFavourites(req, res){
         res.status(500).json({ 'error': "Needs show id and user id" })
     }
 
+    let fave = ''
     try {
-        let fav = await models.Favourite.findOne( {
-                        where: {
-                            [Op.and]: [
-                                {show_id: req.params.show_id},
-                                {user_id: req.params.user_id},
-                            ]
-                        }
-                    })
-
-        if (fav){ res.status(500).json({message: "Entry already exists"}) }
-
-        await models.Favourite.create({
-            show_id: req.body.show_id,
-            user_id: req.body.user_id,
+        fave = await models.Favourite.findOne({
+            where: {
+                TvShowId: req.body.show_id,
+                userId: req.body.user_id,
+            }
         })
-
-        return res.json({ message: "Added to Favourites", });
-
+        if (fave){ return res.status(500).json({message: "Entry already exists"}) }
     } catch(err) {
-        res.json({ "error": "There was an error", err })
+        console.log("new Favourite", err)
     }
 
+    try{
+        await models.Favourite.create({
+            TvShowId: req.body.show_id,
+            userId: req.body.user_id
+        })
+        return res.status(200).json({ message: "Added to favourites", });
+    } catch(err) {
+        return res.status(500).json({ "error": "There was an error", err })
+    }
 }
 
 
@@ -62,10 +64,8 @@ async function removeFromFavourites(req, res){
     try {
         let favs =  await models.Favourite.findOne( {
             where: {
-                [Op.and]: [
-                    { show_id: req.params.show_id },
-                    { user_id: req.params.user_id }
-                ]
+                TvShowId: req.params.show_id,
+                userId: req.params.user_id
             }
         })
         await favs.destroy()

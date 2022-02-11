@@ -45,31 +45,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
-                    <div id="Edit" class="p-4 lg:p-8 rounded border border-gray-200">
-                        <h1 class="font-medium text-3xl">Edit Actor</h1>
-                        <p class="text-gray-600 mt-6">
-                            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos dolorem vel cupiditate laudantium dicta.
-                        </p>
 
-                        <form>
-                            <div class="mt-8 space-y-6">
-                                <div>
-                                    <label for="first_name" class="text-sm text-gray-700 block mb-1 font-medium">First Name</label>
-                                    <input type="text" name="first_name" id="edit_first_name" class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full" placeholder="Movie name" />
-                                </div>
-                                <div>
-                                    <label for="last_name" class="text-sm text-gray-700 block mb-1 font-medium">First Name</label>
-                                    <input type="text" name="last_name" id="edit_last_name" class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full" placeholder="Movie name" />
-                                </div>
-                            </div>
-
-                            <div class="space-x-4 mt-8">
-                                <button type="submit" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Save</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

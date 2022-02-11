@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-
       <header-component></header-component>
 
       <router-view></router-view>
@@ -10,6 +9,7 @@
 
 
 <script>
+import moment from 'moment'
 import HeaderComponent from './src/components/TheHeader.vue'
 
 export default {

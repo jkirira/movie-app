@@ -2,10 +2,18 @@ const models = require('../models/sequelize/relationships.js')
 const { Op } = require("sequelize");
 
 
-async function getRatings(req, res){
+async function getMovieRating(req, res){
     try{
-        let rats =  await models.Rating.findAll( {where: { show_id: req.params.show_id } })
-        res.json(rats);
+        let rats =  await models.Rating.findAll( {where: { TvShowId: req.params.show_id } })
+        if(rats.length > 0){
+            let total = 0
+            rats.forEach((rat) => {
+                total += rat.amount;
+            })
+            return res.json( (total/rats.length).toFixed(1) );
+        }
+        return res.json(0)
+
     } catch(err){
         res.json({ "error": "There was an error", err })
     }
@@ -21,6 +29,21 @@ async function getRating(req, res){
     }
 }
 
+async function getUserRating(req, res){
+    if( !req.body.user_id ) {
+        res.status(500).json({ 'error': "Needs show id, user id and amount" })
+    }
+
+    try{
+        let rat =  await models.Rating.findOne( {
+            where: { UserId: req.body.user_id }
+        })
+        res.json(rat)
+    } catch(err){
+        res.json({ "error": "There was an error", err })
+    }
+}
+
 async function addRating(req, res){
 
     // if( !validateRequest(req.body).isValid ) {
@@ -31,22 +54,28 @@ async function addRating(req, res){
         res.status(500).json({ 'error': "Needs show id, user id and amount" })
     }
 
+    let rat = ''
     try {
-        let fav = await models.Rating.findOne( {
+        rat = await models.Rating.findOne({
             where: {
-                [Op.and]: [
-                    {show_id: req.body.show_id},
-                    {user_id: req.body.user_id},
-                ]
+                TvShowId: req.body.show_id,
+                userId: req.body.user_id,
             }
         })
+        if (rat){
+            await rat.update(req.body)
+            await rat.save();
+            return res.json({ message: "Rating Changed", });
+        }
+    } catch(err) {
+        console.log("new Rating", err)
+    }
 
-        if (fav){ res.status(500).json({message: "Entry already exists"}) }
-
+    try{
         await models.Rating.create({
             amount: req.body.amount,
-            show_id: req.body.show_id,
-            user_id: req.body.user_id,
+            TvShowId: req.body.show_id,
+            userId: req.body.user_id,
         })
 
         return res.json({ message: "Added to Ratings", });
@@ -90,4 +119,4 @@ async function deleteRating(req, res){
 
 }
 
-module.exports = { getRatings, getRating, addRating, updateRating, deleteRating }
+module.exports = { getMovieRating, getUserRating, getRating, addRating, updateRating, deleteRating }

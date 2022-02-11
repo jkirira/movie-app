@@ -8,50 +8,56 @@ const Rating = require('./RatingModel.js')
 const Actor = require('./ActorModel.js')
 const Favourite = require('./FavouriteModel.js')
 
-// const { Sequelize, DataTypes } = require("sequelize");
-// const sequelize = require("../../config/database.js");
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = require("../../config/database.js");
 
-User.hasMany(Favourite, {foreignKey: 'user_id', onDelete: 'CASCADE'})
+User.hasMany(Favourite, { onDelete: 'CASCADE'})
 Favourite.belongsTo(User)
 
-User.hasMany(Subscription, {foreignKey: 'user_id', onDelete: 'CASCADE'})
+User.hasMany(Subscription, { onDelete: 'CASCADE'})
 Subscription.belongsTo(User)
 
-TvShow.hasMany(Subscription, {foreignKey: 'show_id', onDelete: 'CASCADE'})
+User.hasMany(Rating, { onDelete: 'CASCADE'})
+Rating.belongsTo(User)
+
+TvShow.hasMany(Subscription, { onDelete: 'CASCADE'})
 Subscription.belongsTo(TvShow)
 
-TvShow.hasMany(Episode, {foreignKey: 'show_id', onDelete: 'CASCADE'});
+TvShow.hasMany(Episode, { onDelete: 'CASCADE'});
 Episode.belongsTo(TvShow)
 
-TvShow.hasMany(Comment, {foreignKey: 'show_id', onDelete: 'CASCADE'});
+TvShow.hasMany(Comment, { onDelete: 'CASCADE'});
 Comment.belongsTo(TvShow)
 
-TvShow.hasMany(Review, {foreignKey: 'show_id', onDelete: 'CASCADE'})
+TvShow.hasMany(Review, { onDelete: 'CASCADE'})
 Review.belongsTo(TvShow)
 
-TvShow.hasMany(Rating, {foreignKey: 'show_id', onDelete: 'CASCADE'})
+TvShow.hasMany(Rating, { onDelete: 'CASCADE'})
 Rating.belongsTo(TvShow)
 
-// const ActorTvShows = sequelize.define('ActorTvShows', {
-//     TvShowId: {
-//         type: DataTypes.INTEGER,
-//         references: {
-//             model: TvShow, // 'Movies' would also work
-//             key: 'id'
-//         }
-//     },
-//     ActorId: {
-//         type: DataTypes.INTEGER,
-//         references: {
-//             model: Actor, // 'Actors' would also work
-//             key: 'id'
-//         }
-//     }
-// });
-//
-//
-// TvShow.belongsToMany(Actor, { through: ActorTvShows });
-// Actor.belongsToMany(TvShow, { through: ActorTvShows });
+TvShow.hasMany(Favourite, { onDelete: 'CASCADE'})
+Favourite.belongsTo(TvShow)
+
+const ActorTvShows = sequelize.define('ActorTvShows', {
+    TvShowId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: TvShow, // 'Movies' would also work
+            key: 'id'
+        }
+    },
+    ActorId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Actor, // 'Actors' would also work
+            key: 'id'
+        }
+    }
+});
+
+
+TvShow.belongsToMany(Actor, { through: ActorTvShows });
+Actor.belongsToMany(TvShow, { through: ActorTvShows });
 
 
 module.exports = {
@@ -63,5 +69,6 @@ module.exports = {
     Review,
     Rating,
     Actor,
-    Favourite
+    Favourite,
+    ActorTvShows
 };

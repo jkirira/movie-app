@@ -5,21 +5,36 @@
                 <p class="lg:w-2/3 mx-auto leading-relaxed text-base"></p>
             </div>
 
-            <div class="flex flex-col component-body overflow-scroll">
-                <div class="flex items-center shadow-md rounded-md px-3 py-6 w-7/12">
-                    <div class="flex w-1/12"></div>
-                    <div class="flex flex-wrap flex-col h-full w-7/12">
-                        <p>Comment Name</p>
-                        <p>Comment Date</p>
+            <div  class="flex flex-col component-body overflow-scroll">
+                <template v-if="episodes">
+                    <div v-for="(episode, index) in episodes" :key="index" class="flex items-center shadow-md rounded-md px-3 py-6 w-7/12">
+                        <div class="flex w-1/12"></div>
+                        <div class="flex flex-wrap flex-col h-full w-7/12">
+                            <p>{{ episode.name }}</p>
+                            <p>{{ episode.description }}</p>
+                            <p>{{ moment(episode.createdAt).format('ll') }}</p>
+                        </div>
+                        <div class="w-4/12 flex items-center space-x-4"></div>
                     </div>
-                    <div class="w-4/12 flex items-center space-x-4"></div>
-                </div>
+                </template>
+                <template v-else>
+                    <div class="flex items-center shadow-md rounded-md px-3 py-6 w-7/12">
+                        There are no episodes yet.
+                    </div>
+                </template>
             </div>
 
         </div>
 </template>
 
 <script>
+export default {
+    name: "EpisodesComponent",
+    props: ["episodes"],
+    mounted() {
+        console.log(this.$attrs)
+    }
+}
 
 </script>
 

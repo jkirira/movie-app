@@ -20,9 +20,9 @@ async function adminLogin(req, res){
         const password_match = await bcrypt.compare(req.body.password, user.password);
         if (password_match) {
             let Token = jwt.sign({ 'email': user.email, 'id': user.id.toString() }, "secret")
-            res.status(200).json( {'success': "success", 'username': user.username, 'token': Token} )
+            return res.status(200).json( {'success': "success", 'username': user.username, 'token': Token} )
         } else {
-            res.status(404).json({'error': "User not Found"})
+            return res.status(404).json({'error': "User not Found"})
         }
 
     } catch(err) {

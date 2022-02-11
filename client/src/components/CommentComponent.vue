@@ -9,16 +9,23 @@
                     </div>
 
                     <div class="flex flex-col component-body overflow-scroll">
-                        <div class="flex items-center shadow-md rounded-md px-3 py-6">
-                            <div class="flex w-1/12"></div>
-                            <div class="flex flex-wrap flex-col h-full w-8/12">
-                                <p>Comment Text</p>
-                                <p>Comment Date</p>
-                                <p>User Posted</p>
+                        <template v-if="comments && comments.length > 1">
+                            <div v-for="(comment, index) in comments" :key="index" class="flex flex-col lg:flex-row lg:items-center shadow-md rounded-md px-3 py-6">
+                                <div class="flex w-1/12"></div>
+                                <div class="flex flex-wrap flex-col h-full w-7/12">
+                                    <p>{{ moment(comment.createdAt).format('ll') }}</p>
+                                    <p>{{ comment.text }}</p>
+                                </div>
+                                <div class="w-4/12 flex items-center space-x-4 my-2">
+                                </div>
                             </div>
-                            <div class="w-3/12 flex items-center space-x-4">
+                        </template>
+                        <template v-else>
+                            <div class="flex items-center shadow-md rounded-md px-3 py-6 w-7/12">
+                                There are no comments yet.
                             </div>
-                        </div>
+                        </template>
+
                     </div>
 
                 </div>
@@ -28,15 +35,63 @@
                 <p class="leading-relaxed mb-5 text-gray-600"></p>
                 <div class="relative mb-4 flex flex-col">
                     <label for="message" class="leading-7 text-sm text-gray-600">Message</label>
-                    <textarea id="message" name="message" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                    <textarea v-model="comment_text" id="message" name="message" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
                 </div>
-                <button class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
+                <button @click="addComment" class="text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Comment</button>
             </div>
         </div>
     </section>
 </template>
 
 <script>
+import axios from "axios";
+
+export default {
+    name: "CommentComponent",
+    props: ["comments"],
+    data(){
+        return{
+            "comment_text": ''
+        }
+    },
+
+    mounted() {
+        console.log("jkjkhn")
+        console.log(this.$attrs)
+    },
+
+    methods:{
+        addComment(){
+            let userId;
+
+            if(this.$store.getters.isLoggedIn){
+                userId = this.$store.getters.userDetails.id
+            } else {
+                this.$router.push({name: 'login'})
+            }
+
+            if( this.comment_text == '' || !this.comment_text ){
+                alert("cannot send empty comment")
+                return
+            }
+
+            let sendComment = {};
+
+            sendComment['text'] = this.comment_text;
+            sendComment['user_id'] =  this.$store.getters.userDetails.id;
+
+            // console.log(formData)
+            axios.post('http://localhost:4000/api/v1/shows/'+ this.$route.params.show.id +'/comments', sendComment)
+                  .then((response) => {
+                      console.log(response)
+                      console.log('comment added')
+                  }).catch((err) => {
+                console.log('something went wrong error', err)
+                this.error_message = err;
+            })
+        }
+    }
+}
 
 </script>
 
