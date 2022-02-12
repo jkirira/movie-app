@@ -57,7 +57,11 @@ export default {
     methods: {
         search(){
             if(!this.search_tag){
-                alert('Cannot search empty values !')
+                this.$swal.fire({
+                    title: "Empty Values",
+                    text: "Cannot search for empty value",
+                    icon: 'error',
+                })
                 return;
             }
             // this.$router.push({ name: 'search_movie', params: { tag: this.search_tag } })
@@ -67,8 +71,13 @@ export default {
                       this.movies = response.data
                       console.log(this.movies)
                   }).catch((err) => {
-                console.log("error:", err)
-            })
+                        console.log("error:", err)
+                        this.$swal.fire({
+                            title: "Error",
+                            text: "Something went wrong",
+                            icon: 'error',
+                        })
+                    })
         }
     }
 }

@@ -60,16 +60,35 @@ export default {
     },
     methods: {
         cancel(fav){
-            axios.delete("http://localhost:4000/api/v1/shows/favourite/user/" + this.$route.params.user_id + "/" + fav.id )
-                  .then((response) => {
-                      this.favourites = this.favourites.filter((f) => {
-                          return f.id != fav.id
-                      })
-                      console.log('deleted')
-                  }).catch((err) => {
-                console.log("error:", err)
+            this.$swal.fire({
+                title: 'Are you sure?',
+                text: "Remove from favourites?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let URL = 'http://laravel-todo.appp/posts/delete/'+p.id;
+                    axios.delete("http://localhost:4000/api/v1/shows/favourite/user/" + this.$route.params.user_id + "/" + fav.id )
+                          .then((response) => {
+                              this.favourites = this.favourites.filter((f) => {
+                                  return f.id != fav.id
+                              })
+                              this.$swal.fire({
+                                  text: "Removed from Favourites!",
+                                  icon: 'warning',
+                              })
+                              console.log('deleted')
+                          }).catch((err) => {
+                        console.log("error:", err)
+                        this.$swal.fire({
+                            title: "Error",
+                            text: "There was an error removing from subscriptions",
+                            icon: 'error',
+                        })
+                    })
+                }
             })
-
         }
     }
 

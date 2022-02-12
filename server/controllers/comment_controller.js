@@ -34,6 +34,7 @@ function addComment(req, res){
     //     res.status(400).json({ 'error': validateRequest(req.body).error, })
     // }
 
+    console.log(req)
     if( !req.body.text || !req.params.show_id || !req.body.user_id ) {
         return res.status(500).json({ 'error': "Needs text, show id and user id" })
     }

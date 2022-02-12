@@ -1,4 +1,5 @@
 const models = require('../models/sequelize/relationships.js')
+const { adminSendNotification } = require('../config/mail.js')
 const Op = require('sequelize')
 
 
@@ -22,6 +23,33 @@ async function getShowSubscriptions(req, res){
             include: [models.TvShow, models.User]
         })
         res.json(subs);
+    } catch(err){
+        res.status(404).json({ 'error': "An error occurred", err})
+    }
+}
+
+async function adminMail(req, res){
+    try{
+
+        if(!req.body.subscribers){
+            return res.json({message: "did not receive any subscribers"})
+        }
+
+        if(!req.body.email_text){
+            return res.json({message: "did not receive email body"})
+        }
+
+        let subscribers = req.body.subscribers
+        let emailText = req.body.email_text
+
+        // return res.json(subscribers)
+        if(subscribers.length > 0){
+            subscribers.forEach((email) => { adminSendNotification(email, emailText) } );
+            return res.json({ message: "Emails sent successfully!", });
+        } else {
+            console.log('An error occurred')
+            return res.json({ message: "An error occurred when sending emails!", });
+        }
     } catch(err){
         res.status(404).json({ 'error': "An error occurred", err})
     }
@@ -115,4 +143,4 @@ async function deleteSubscription(req, res){
 
 }
 
-module.exports = { getShowSubscriptions, getSubscriptionById, getSubscriptions, getUserSubscriptions, addSubscription, removeSubscription, deleteSubscription }
+module.exports = { getShowSubscriptions, getSubscriptionById, getSubscriptions, getUserSubscriptions, adminMail, addSubscription, removeSubscription, deleteSubscription }

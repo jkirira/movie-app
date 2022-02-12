@@ -9,15 +9,15 @@
                 <template v-if="episodes">
                     <div v-for="(episode, index) in episodes" :key="index" class="flex items-center shadow-md rounded-md px-3 py-6 w-7/12">
                         <div class="flex w-1/12"></div>
-                        <div class="flex flex-wrap flex-col h-full w-7/12">
+                        <div class="flex flex-wrap flex-col h-full w-full lg:w-11/12">
                             <p>{{ episode.name }}</p>
                             <p>{{ episode.description }}</p>
-                            <p>{{ moment(episode.createdAt).format('ll') }}</p>
+                            <p>{{ episode.createdAt | convertDate }}</p>
                         </div>
                         <div class="w-4/12 flex items-center space-x-4"></div>
                     </div>
                 </template>
-                <template v-else>
+                <template v-if="!episodes">
                     <div class="flex items-center shadow-md rounded-md px-3 py-6 w-7/12">
                         There are no episodes yet.
                     </div>
@@ -31,9 +31,13 @@
 export default {
     name: "EpisodesComponent",
     props: ["episodes"],
+    data(){
+        return{
+        }
+    },
     mounted() {
         console.log(this.$attrs)
-    }
+    },
 }
 
 </script>

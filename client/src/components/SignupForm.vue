@@ -70,10 +70,20 @@ export default {
                   .then((response) => {
                       console.log("success")
                       console.log(response.data)
+                      this.$swal.fire({
+                          title: "Signed In",
+                          text: "Please log in to continue.",
+                          icon: 'success',
+                      })
                       window.location = '/#/login'
                   }).catch((err) => {
-                    console.log("error")
-                    console.log(err)
+                        console.log("error")
+                        console.log(err)
+                        this.$swal.fire({
+                            title: "Error",
+                            text: "There was an error signing in",
+                            icon: 'error',
+                        })
                 })
         }
     }

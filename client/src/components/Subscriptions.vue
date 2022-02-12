@@ -9,13 +9,13 @@
 
             <div class="flex flex-col component-body overflow-scroll">
                 <template v-if="subscriptions.length > 0">
-                    <div v-for="(subscription, index) in subscriptions" :key="index" class="flex items-center shadow-md rounded-md px-3 py-6 w-10/12">
-                        <div class="flex w-1/12">{{subscription.id}}</div>
-                        <div class="flex flex-wrap flex-col h-full w-7/12">
+                    <div v-for="(subscription, index) in subscriptions" :key="index" class="flex flex-col lg:flex-row items-center shadow-md rounded-md px-3 py-6 w-10/12">
+                        <div class="flex py-2 w-full lg:w-1/12">{{subscription.id}}</div>
+                        <div class="flex py-2 flex-wrap flex-col h-full w-full lg:w-7/12">
                             <p>{{ subscription.TvShow.name }}</p>
                             <p>Created on: {{ moment(subscription.createdAt).format('ll') }}</p>
                         </div>
-                        <div class="w-4/12 flex items-center space-x-4">
+                        <div class="py-2 w-full lg:w-4/12 flex items-center space-x-4">
                             <button @click="cancel(subscription)" class="py-2 px-4 bg-green border border-gray-200 text-gray-600 rounded hover:bg-red-500 hover:text-white active:bg-green-200 disabled:opacity-50">Cancel</button>
                         </div>
                     </div>
@@ -65,9 +65,18 @@ export default {
                       this.subscriptions = this.subscriptions.filter((s) => {
                          return s.id != sub.id
                       })
+                      this.$swal.fire({
+                          text: "Unsubscribed!",
+                          icon: 'warning',
+                      })
                       console.log('deleted')
                   }).catch((err) => {
                     console.log("error:", err)
+                    this.$swal.fire({
+                        title: "Error",
+                        text: "An Error occurred when unsubscribing!",
+                        icon: 'error',
+                    })
                 })
 
         }

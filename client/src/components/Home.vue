@@ -17,28 +17,43 @@
 
         <div class="container px-5 py-12 xl:mx-4">
             <div class="flex flex-col w-full mb-6 ">
-                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">TRENDING</h1>
+                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">TRENDING<i class="fa-solid fa-fire m-2"></i></h1>
             </div>
-            <div class="movie-carousel gap-2 my-8 auto-cols-max">
-                <movie-card v-for="(movie, index) in latest" :key="index" :movie="movie" v-bind:next="'movie_details'"></movie-card>
-            </div>
-        </div>
-
-        <div class="container px-5 py-12 xl:mx-4">
-            <div class="flex flex-col w-full mb-6">
-                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">LATEST</h1>
-            </div>
-            <div class="flex overflow-x-scroll my-8 h-96">
-                <movie-card v-for="(movie, index) in latest" :key="index" :movie="movie" v-bind:next="'movie_details'"></movie-card>
+            <div class="movie-carousel gap-4 my-8 auto-cols-max">
+                <template v-if="latest">
+                    <movie-card v-for="(movie, index) in latest" :key="index" :movie="movie" v-bind:next="'movie_details'"></movie-card>
+                </template>
+                <template v-else>
+                    <div>No Movies Available</div>
+                </template>
             </div>
         </div>
 
         <div class="container px-5 py-12 xl:mx-4">
             <div class="flex flex-col w-full mb-6">
-                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">EXPLORE</h1>
+                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">LATEST<i class="fa-regular fa-star m-2"></i></h1>
             </div>
-            <div class="flex overflow-x-scroll my-8 h-96">
-                <movie-card v-for="(movie, index) in latest" :key="index" :movie="movie" v-bind:next="'movie_details'"></movie-card>
+            <div class="movie-carousel gap-4 my-8 auto-cols-max">
+                <template v-if="latest">
+                    <movie-card v-for="(movie, index) in latest" :key="index" :movie="movie" v-bind:next="'movie_details'"></movie-card>
+                </template>
+                <template v-else>
+                    <div>No Movies Available</div>
+                </template>
+            </div>
+        </div>
+
+        <div class="container px-5 py-12 xl:mx-4">
+            <div class="flex flex-col w-full mb-6">
+                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">EXPLORE<i class="fa-regular fa-face-surprise m-2"></i></h1>
+            </div>
+            <div class="movie-carousel gap-4 my-8 auto-cols-max">
+                <template v-if="latest">
+                    <movie-card v-for="(movie, index) in latest" :key="index" :movie="movie" v-bind:next="'movie_details'"></movie-card>
+                </template>
+                <template v-else>
+                    <div>No Movies Available</div>
+                </template>
             </div>
         </div>
 
@@ -92,7 +107,11 @@ export default {
     methods: {
         search(){
             if(!this.search_tag){
-                alert('Cannot search empty values !')
+                this.$swal.fire({
+                    title: "Empty Values",
+                    text: "Cannot search for empty value",
+                    icon: 'error',
+                })
                 return;
             }
             // this.$router.push({ name: 'search_movie', params: { tag: this.search_tag } })
@@ -108,6 +127,7 @@ export default {
     display:grid;
     grid-auto-flow:column;
     overflow:auto;
+    padding: 20px 0;
 }
 
 @media screen and (min-width: 1536px){

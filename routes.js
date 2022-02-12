@@ -51,8 +51,9 @@ const routes = [
         path: '/admin',
         component: AdminView,
         beforeEnter: (to, from, next) => {
-            if ( !store.getters.isAdmin) next(false)
-            next()
+            console.log(store.getters.isAdmin)
+            if ( store.getters.isAdmin ) next()
+            next(false)
         },
         children: [
             {
@@ -100,7 +101,7 @@ const routes = [
             {
                 // UserPosts will be rendered inside User's <router-view>
                 // when /user/:id/posts is matched
-                path: 'shows/:id/mail',
+                path: 'shows/:id/subscriptions',
                 component: Mail,
                 name: 'admin_mail'
             },

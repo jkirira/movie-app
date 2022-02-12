@@ -1,33 +1,5 @@
 const {TvShow, Subscription, Episode, User} = require('../models/sequelize/relationships.js')
-var nodemailer = require('nodemailer');
-
-var transport = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-        user: "d7328e61c5c745",
-        pass: "cc2b377e911ead"
-    }
-});
-
-
-function mailSend(user_email, email_text ){
-
-    var mailOptions = {
-        from: '"TvShow App" <tvshowapp@example.com>',
-        to: user_email,
-        subject: 'New Episode',
-        text: email_text
-    };
-
-    transport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error)
-            return error;
-        }
-        console.log('Message sent: %s', info.messageId);
-    });
-}
+const { sendNotification } = require('../config/mail.js')
 
 
 function getEpisodes(req, res){
@@ -106,8 +78,6 @@ function addEpisode(req, res){
     let subscribers = []
 
 
-
-
     Episode.create({
         name: req.body.episode_name,
         description: req.body.description,
@@ -116,6 +86,7 @@ function addEpisode(req, res){
         TvShowId: req.params.show_id,
     })
         .then(() => {
+            console.log({ message: "Record created successfully!", });
             Subscription.findAll( {
                 where: { TvShowId: req.params.show_id },
                 include: [ User ],
@@ -131,9 +102,12 @@ function addEpisode(req, res){
             })
         })
         .then(() => {
-            let email_text = 'Hey there ! ' + req.body.episode_name + ' Has a new Episode ! ';
-            subscribers.forEach((email) => { mailSend(email, email_text); } );
-            return res.json({ message: "Record created successfully!", });
+            if(subscribers.length > 0){
+                subscribers.forEach((email) => { sendNotification(email) } );
+                return res.json({ message: "Emails sent successfully!", });
+            } else {
+                console.log('No subscribers')
+            }
         })
         .catch((error) => {
             console.log(error);

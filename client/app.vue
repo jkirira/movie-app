@@ -10,6 +10,7 @@
 
 <script>
 import moment from 'moment'
+import VueSweetalert2 from 'vue-sweetalert2';
 import HeaderComponent from './src/components/TheHeader.vue'
 
 export default {

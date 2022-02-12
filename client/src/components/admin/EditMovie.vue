@@ -104,9 +104,18 @@ export default {
             axios.put('http://localhost:4000/api/v1/shows/' + this.form.id, formData)
                   .then((response) => {
                       console.log('movie edited')
+                      this.$swal.fire({
+                          text: "Movie Edited",
+                          icon: 'success',
+                      })
                   }).catch((err) => {
                     console.log('something went wrong error', err)
                     this.error_message = err;
+                    this.$swal.fire({
+                        title: "Error",
+                        text: "There was an error ",
+                        icon: 'error',
+                    })
                 })
         }
     }

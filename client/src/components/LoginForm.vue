@@ -71,6 +71,7 @@ export default {
 
       login(e){
             e.preventDefault();
+            // this.$swal.fire('Hello Vue world!!!');
             if( !this.validate() ){
                 return;
             }
@@ -83,20 +84,26 @@ export default {
           axios.post(url, { 'email': this.form.email, 'password': this.form.password } )
             .then((response) => {
                 console.log("success")
-                console.log(response.data)
-                window.localStorage.setItem( 'user', response.data.user );
+                console.log("user", response.data.user)
+                window.localStorage.setItem( 'user', JSON.stringify(response.data.user) );
                 window.localStorage.setItem( 'movie_token', response.data.token.toString() );
                 store.dispatch("set_user", response.data.user)
                 store.dispatch("set_token", response.data.token.toString())
                 store.dispatch("log_in")
+                this.$swal.fire({
+                    title: "Success",
+                    text: "Logged In!",
+                    icon: 'success',
+                })
                 window.location = '/#/shows'
-                this.display_message = "Logged in"
-                this.message_class = "bg-green-500 text-white rounded"
             }).catch((err) => {
               console.log("error")
               console.log(err.response.data)
-              this.display_message = err.response.data.error
-              this.message_class = "bg-red-500 text-white rounded"
+              this.$swal.fire({
+                  title: "Error",
+                  text: "There was an error loggin in",
+                  icon: 'error',
+              })
             })
         }
     }

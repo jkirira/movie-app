@@ -10,10 +10,13 @@
                     <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{{ show.name }}
                         <br class="hidden lg:inline-block">
                     </h1>
-                    <div class="flex justify-center">
+                    <div class="flex justify-center my-2">
                         <router-link :to="{ name: 'edit_movie', params: {id: show.id } } " ><button class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Edit</button></router-link>
                         <button @click="deleteShow" class="ml-4 inline-flex text-gray-700 bg-red-100 border-0 py-2 px-6 focus:outline-none hover:bg-red-200 rounded text-lg">Delete</button>
                         <router-link :to="{ name: 'manage_episodes', params: {id: show.id } }"><button class="ml-4 inline-flex text-gray-700 bg-indigo-100 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-200 rounded text-lg">Episodes</button></router-link>
+                    </div>
+                    <div class="flex justify-center my-2">
+                        <router-link :to="{ name: 'admin_mail', params: {id: show.id } } " ><button class="inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">Subscribers</button></router-link>
                     </div>
                 </div>
             </div>
@@ -71,10 +74,19 @@ export default {
             axios.delete(URL)
                   .then((response) => {
                       console.log('show')
+                      this.$swal.fire({
+                          text: "Deleted ! ",
+                          icon: 'warning',
+                      })
                       window.location = "#/admin/shows"
                   }).catch((err) => {
                         console.log("error:", err)
-                    })
+                        this.$swal.fire({
+                            title: "Error",
+                            text: "There was an error deleting this movie ",
+                            icon: 'error',
+                        })
+                })
         },
         editEpisode(e){
             window.location = '/episode'

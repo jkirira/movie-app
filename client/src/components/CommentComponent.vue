@@ -12,8 +12,8 @@
                         <template v-if="comments && comments.length > 1">
                             <div v-for="(comment, index) in comments" :key="index" class="flex flex-col lg:flex-row lg:items-center shadow-md rounded-md px-3 py-6">
                                 <div class="flex w-1/12"></div>
-                                <div class="flex flex-wrap flex-col h-full w-7/12">
-                                    <p>{{ moment(comment.createdAt).format('ll') }}</p>
+                                <div class="flex flex-wrap flex-col h-full w-full lg:w-11/12">
+                                    <p>{{ comment.createdAt | convertDate }}</p>
                                     <p>{{ comment.text }}</p>
                                 </div>
                                 <div class="w-4/12 flex items-center space-x-4 my-2">
@@ -67,11 +67,19 @@ export default {
             if(this.$store.getters.isLoggedIn){
                 userId = this.$store.getters.userDetails.id
             } else {
-                this.$router.push({name: 'login'})
+                this.$swal.fire({
+                    text: "You have to be logged in to perform this function",
+                    icon: 'warning',
+                })
+                return
             }
 
             if( this.comment_text == '' || !this.comment_text ){
-                alert("cannot send empty comment")
+                this.$swal.fire({
+                    title: "Empty Values",
+                    text: "Cannot comment for empty value",
+                    icon: 'error',
+                })
                 return
             }
 
@@ -79,16 +87,27 @@ export default {
 
             sendComment['text'] = this.comment_text;
             sendComment['user_id'] =  this.$store.getters.userDetails.id;
+            sendComment['createdAt'] =  Date.now();
 
             // console.log(formData)
             axios.post('http://localhost:4000/api/v1/shows/'+ this.$route.params.show.id +'/comments', sendComment)
                   .then((response) => {
                       console.log(response)
                       console.log('comment added')
+                      this.$swal.fire({
+                          text: "Added Comment!",
+                          icon: 'success',
+                      })
+                      this.comments.unshift(sendComment)
                   }).catch((err) => {
-                console.log('something went wrong error', err)
-                this.error_message = err;
-            })
+                        console.log('something went wrong error', err)
+                        this.error_message = err;
+                        this.$swal.fire({
+                            title: "Error",
+                            text: "An error occurred when commenting",
+                            icon: 'error',
+                        })
+                    })
         }
     }
 }

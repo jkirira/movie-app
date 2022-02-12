@@ -4,7 +4,7 @@ const { getReviews, getReview, addReview, updateReview, deleteReview } = require
 const { getMovieRating, getUserRating, getRating, addRating, updateRating, deleteRating } = require("../controllers/rating_controller.js")
 const { getActors, getActor, addActor, updateActor, deleteActor } = require("../controllers/actor_controller.js")
 const { getFavourites, getFavourite, addToFavourites, removeFromFavourites, deleteFavourite } = require('../controllers/favourite_controller.js')
-const { getShowSubscriptions, getUserSubscriptions, getSubscriptions, getSubscriptionById, addSubscription, deleteSubscription, removeSubscription} = require('../controllers/subscription_controller.js')
+const { getShowSubscriptions, getUserSubscriptions, getSubscriptions, getSubscriptionById, adminMail, addSubscription, deleteSubscription, removeSubscription} = require('../controllers/subscription_controller.js')
 
 const { getEpisodes, getShowEpisodes, getEpisodeById, getEpisodeByName, addEpisode, updateEpisode, deleteEpisode } = require('../controllers/episode_controller.js')
 
@@ -77,6 +77,7 @@ routes = [
         router.get('/subscriptions/user/:user_id', getUserSubscriptions),              // , authenticate
         router.get('/subscriptions/:sub_id', getSubscriptionById),              // , authenticate
         router.get('/:show_id/subscriptions', getShowSubscriptions),              // , authenticate
+        router.post('/:show_id/subscriptions/mail', adminMail),         // , authenticate
         router.post('/:show_id/subscriptions/user/:user_id', addSubscription),         // , authenticate
         router.delete('/:show_id/subscriptions/user/:user_id', removeSubscription),         // , authenticate
         router.delete('/subscriptions/user/:user_id/:sub_id', deleteSubscription),              // , authenticate

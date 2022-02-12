@@ -58,7 +58,11 @@ export default {
     methods: {
         search(){
             if(!this.search_tag){
-                alert('Cannot search empty values !')
+                this.$swal.fire({
+                    title: "Empty values",
+                    text: "Cannot search empty values !",
+                    icon: 'warning',
+                })
                 return;
             }
             // this.$router.push({ name: 'search_movie', params: { tag: this.search_tag } })

@@ -10,8 +10,8 @@
                 <div class="flex flex-col lg:flex-row lg:items-center shadow-md rounded-md px-3 py-6">
                     <div class="flex w-1/12"></div>
                     <div class="flex flex-wrap flex-col h-full w-7/12">
-                        <p>Comment Text</p>
-                        <p>Comment Date</p>
+                        <p>Reviews Text</p>
+                        <p>Review Date</p>
                     </div>
                     <div class="w-4/12 flex items-center space-x-4 my-2">
                         <button type="submit" class="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50">Save</button>

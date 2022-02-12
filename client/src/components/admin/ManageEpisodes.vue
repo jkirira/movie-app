@@ -82,7 +82,7 @@ export default {
     },
     methods: {
         validate(){
-            if ( !this.form_data.episode_name || !this.form_data.episode_description ){
+            if ( !this.form_data.episode_name){
                 return false
             }
             return true
@@ -105,7 +105,11 @@ export default {
 
         addEpisode(){
             if ( !this.validate() ){
-                alert("Cannot have empty values")
+                this.$swal.fire({
+                    title: "Error",
+                    text: "Cannot add empty episode data ",
+                    icon: 'error',
+                })
                 return
             }
 
@@ -115,17 +119,31 @@ export default {
             axios.post('http://localhost:4000/api/v1/shows/' + this.$route.params.id + '/episodes', this.form_data )
                   .then((response) => {
                       this.episodes.unshift(ep)
+                      this.$swal.fire({
+                          text: "Episode Added",
+                          icon: 'success',
+                      })
                   }).catch((err) => {
                     console.log("Error", err)
+                    this.$swal.fire({
+                        title: "Error",
+                        text: "There was an problem adding this episode",
+                        icon: 'error',
+                    })
                 })
             this.form_data = {}
         },
 
         editEpisode(){
             if ( !this.validate() ){
-                alert("Cannot have empty values")
+                this.$swal.fire({
+                    title: "Error",
+                    text: "Cannot edit empty episode name ",
+                    icon: 'error',
+                })
                 return
             }
+
             axios.put('http://localhost:4000/api/v1/shows/' + this.$route.params.id + '/episodes/' + this.form_data.id, this.form_data)
                   .then((response) => {
                       console.log(response)
@@ -134,9 +152,14 @@ export default {
                       })
                       delete this.form_data.id
                       episode = this.form_data.id
+                      this.$swal.fire({
+                          text: "Edited episode ",
+                          icon: 'success',
+                      })
                   }).catch((err) => {
-                console.log("Error", err)
-            })
+                        console.log("Error", err)
+                  })
+
             this.form_data = {}
         },
         deleteEpisode(ep){
@@ -145,9 +168,18 @@ export default {
                       console.log(this.episodes)
                       this.episodes = this.episodes.filter((episode) => {
                           return episode.id != ep.id
+                          this.$swal.fire({
+                              text: "Deleted episode ",
+                              icon: 'warning',
+                          })
                       })
                   }).catch((err) => {
                         console.log("Error", err)
+                        this.$swal.fire({
+                            title: "Error",
+                            text: "There was an error deleting this episode ",
+                            icon: 'error',
+                        })
                     })
         }
     }

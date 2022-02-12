@@ -27,7 +27,7 @@ function getMovieById(req, res){
 
     models.TvShow.findOne( {
             where: { id: req.params.movie_id },
-            include: [ models.Episode, models.Comment, models.Rating, models.Review ],
+            include: [ models.Episode, models.Comment, models.Rating, models.Review, models.Actor ],
         })
         .then((result) => {
             console.log("in controller")
@@ -99,6 +99,7 @@ function addMovie(req, res){
     }
     let slug = Date.now() + '_' + image_upload.name;
     let save_path = "server/public/" + slug;
+    let img_url = "http://localhost:4000/images/" + slug;
 
     models.TvShow.create({
         name: req.body.name,
@@ -106,7 +107,7 @@ function addMovie(req, res){
         genre: req.body.genre,
         trailer_link: req.body.trailer_link,
         description: req.body.description,
-        poster: (image_upload) ? slug : '../assets/img/default-poster.png',
+        poster: (image_upload) ? img_url : '../assets/img/default-poster.png',
     })
         .then((result) => {
             if(image_upload) {

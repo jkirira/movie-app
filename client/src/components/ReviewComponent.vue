@@ -12,7 +12,7 @@
                         <template v-if="reviews && reviews.length > 1">
                             <div v-for="(review, index) in reviews" :key="index" class="flex items-center shadow-md rounded-md px-3 py-6">
                                 <div class="flex w-1/12"></div>
-                                <div class="flex flex-wrap flex-col h-full w-8/12">
+                                <div class="flex flex-wrap flex-col h-full w-full lg:w-11/12">
                                     <p>{{ moment(review.createdAt).format('ll') }}</p>
                                     <p>{{ review.text }}</p>
                                 </div>

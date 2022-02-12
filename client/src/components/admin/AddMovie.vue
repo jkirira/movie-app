@@ -59,6 +59,11 @@ export default {
         }
     },
     methods: {
+        validate(){
+            if (!this.form.movie_name){
+                return false
+            }
+        },
         fileInput: function (e){
             var files = e.target.files || e.dataTransfer.files;
             if (!files.length) { return; }
@@ -67,6 +72,14 @@ export default {
 
         addMovie: function (e) {
             e.preventDefault();
+            if(!this.validate()){
+                this.$swal.fire({
+                    title: "Empty Values",
+                    text: "Cannot search for empty value",
+                    icon: 'error',
+                })
+                return;
+            }
             let formData = new FormData();
 
             formData.append('name', this.form.movie_name);
@@ -79,8 +92,18 @@ export default {
             axios.post('http://localhost:4000/api/v1/shows/', formData)
                   .then((response) => {
                       console.log('movie added')
+                      this.$swal.fire({
+                          text: "Movie Added ",
+                          icon: 'success',
+                      })
+                      this.$router.push({name: 'admin_home'})
                   }).catch((err) => {
                     console.log('something went wrong error', err)
+                    this.$swal.fire({
+                        title: "Error",
+                        text: "Something went wrong ",
+                        icon: 'error',
+                    })
                     this.error_message = err;
                 })
         }

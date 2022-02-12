@@ -1,13 +1,14 @@
 <template>
     <div>
     <section class="text-gray-600 body-font">
-        <div class="relative flex items-center justify-center">
+        <div class="poster-div relative flex items-center justify-center min-w-96">
             <span class="absolute inset-0">
-                <img class="w-full h-full mb-10 object-cover object-center rounded" alt="hero" src="../assets/img/default-poster.png">
+                <img class="w-full h-full mb-10 object-cover object-center rounded" :src=" show.poster ">
             </span>
-            <span class="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded z-50">
-                <img class="max-h-full max-w-full " alt="hero" src="../assets/img/default-poster.png">
+            <span class="lg:w-90/100 w-5/6 min-h-full object-cover object-center rounded z-50 flex justify-center items-center">
+                <img class="max-h-full max-w-full " :src="show.poster">
             </span>
+            <div class="overlay"></div>
         </div>
         <div class=" container px-4 mx-auto flex flex-col sm:flex-row mt-10">
             <div class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-r border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
@@ -15,18 +16,18 @@
                 <p class="leading-relaxed text-lg mb-4">{{ show.description }}</p>
                 <p class="leading-relaxed text-lg mb-4">Release Date: {{ show.release_date ? moment(show.release_date).format('ll') : '' }}</p>
                 <p class="leading-relaxed text-lg mb-4">Genre: {{ show.genre }}</p>
-                <p class="leading-relaxed text-lg mb-4 flex flex-column md:flex-row">Rating: <star-rating v-model="rating" :read-only="true" :show-rating=false :star-size="20" ></star-rating></p>
+                <p class="leading-relaxed items-center justify-center text-lg mb-4 md:flex md:flex-column md:flex-row">Rating: <star-rating v-model="rating" :read-only="true" :show-rating=false :star-size="20" class="sm:justify-center" ></star-rating></p>
             </div>
 
             <div class="sm:w-1/3 text-center sm:pr-8 sm:py-8">
                 <button @click="sub(show)" class="flex items-center m-auto md:mt-auto text-white bg-gray-400 border-0 py-2 px-4 my-4 justify-center w-9/12 focus:outline-none hover:bg-green-500 rounded">
-                    Subscribe
+                    <i class="fa-solid fa-bell p-2"></i> Subscribe
                 </button>
                 <button @click="fave(show)" class="flex items-center m-auto md:mt-auto text-white bg-gray-400 border-0 py-2 px-4 my-4 justify-center w-9/12 focus:outline-none hover:bg-green-500 rounded">
-                    Add To favourites
+                    <i class="fa-solid fa-thumbs-up p-2"></i>Add To favourites
                 </button>
                 <button id="modal-btn" class="flex items-center m-auto md:mt-auto text-white bg-gray-400 border-0 py-2 px-4 my-4 justify-center w-9/12 focus:outline-none hover:bg-green-500 rounded">
-                    Watch Trailer
+                    <i class="fa-brands fa-vimeo p-2"></i>Watch Trailer
                 </button>
             </div>
 
@@ -36,7 +37,7 @@
 
             <div class="modal-content">
                 <div class="modal-header flex items-center justify-between">
-                    <h2 class="mx-4">{{show.name}} Trailer</h2>
+                    <h2 class="mx-4">' {{show.name}} ' movie Trailer</h2>
                     <span class="close">&times;</span>
                 </div>
                 <div class="modal-body">
@@ -58,7 +59,7 @@
 
             <div class="flex flex-col lg:flex-row">
                 <star-rating v-model="rate_amount" :show-rating=false :star-size="35"></star-rating>
-                <div class="px-4">
+                <div class="p-4 ">
                     <button @click="rate(show)" class="flex items-center lg:m-auto md:mt-auto text-white bg-gray-400 border-0 py-2 px-4 my-4 w-7/10 focus:outline-none hover:bg-green-500 rounded">
                         Rate
                     </button>
@@ -69,10 +70,10 @@
         </div>
 
         <div class="p-8">
-            <ul class="grid grid-flow-col text-center text-gray-500  p-1">
-                <li v-on:click="tabName='episodes'" :class="['tab-button bg-white flex rounded-tl-lg rounded-tr-lg border-l border-t border-r border-gray-100 justify-center py-4', { active: tabName === 'episodes' }]" >Episodes</li>
-                <li v-on:click="tabName='comments'" :class="['tab-button bg-white flex rounded-tl-lg rounded-tr-lg border-l border-t border-r border-gray-100 justify-center py-4', { active: tabName === 'comments' }]">Comments</li>
-                <li v-on:click="tabName='reviews'" :class="['tab-button bg-white flex rounded-tl-lg rounded-tr-lg border-l border-t border-r border-gray-100 justify-center py-4', { active: tabName === 'reviews' }]">Reviews</li>
+            <ul class="grid lg:grid-flow-col text-center text-gray-500  p-1">
+                <li v-on:click="tabName='episodes'" :class="['tab-button bg-white flex rounded-tl-lg rounded-tr-lg border-l border-t border-r border-gray-100 justify-center py-4', { active: tabName === 'episodes' }]" ><i class="fa-solid fa-laptop"></i>Episodes</li>
+                <li v-on:click="tabName='comments'" :class="['tab-button bg-white flex rounded-tl-lg rounded-tr-lg border-l border-t border-r border-gray-100 justify-center py-4', { active: tabName === 'comments' }]">Comments<i class="fa-solid fa-comments"></i></li>
+                <li v-on:click="tabName='reviews'" :class="['tab-button bg-white flex rounded-tl-lg rounded-tr-lg border-l border-t border-r border-gray-100 justify-center py-4', { active: tabName === 'reviews' }]"><i class="fa-solid fa-newspaper p-2"></i>Reviews</li>
             </ul>
         </div>
 
@@ -145,8 +146,8 @@ export default {
                   this.prev_rating = response.data
                   console.log(response.data)
               }).catch((err) => {
-            console.log("error:", err)
-        })
+                console.log("error:", err)
+            })
     },
     mounted() {
         const modal = document.querySelector('#my-modal');
@@ -180,7 +181,12 @@ export default {
             if(this.$store.getters.isLoggedIn){
                 userId = this.$store.getters.userDetails.id
             } else {
-                this.$router.push({name: 'login'})
+                this.$swal.fire({
+                    title: "Error",
+                    text: "You have to be signed in to perform this action",
+                    icon: 'error',
+                })
+                return
             }
 
             const subForm = {}
@@ -191,11 +197,19 @@ export default {
 
             axios.post('http://localhost:4000/api/v1/shows/'+ sh.id +'/subscriptions/user/' + userId, subForm)
                   .then((response) => {
-                      console.log('sub added')
-                      console.log(response)
+                      this.$swal.fire({
+                          text: "Subscribed !",
+                          icon: 'success',
+                      })
+                      console.log(response);
+
                   }).catch((err) => {
-                    console.log('something went wrong error', err)
-                    this.error_message = err;
+                    this.$swal.fire({
+                        title: "Error",
+                        text: err.response.data.message,
+                        icon: 'error',
+                    })
+                    this.error_message = err.response.data.message;
                 })
         },
 
@@ -205,7 +219,12 @@ export default {
             if(this.$store.getters.isLoggedIn){
                 userId = this.$store.getters.userDetails.id
             } else {
-                this.$router.push({name: 'login'})
+                this.$swal.fire({
+                    title: "Error",
+                    text: "You have to be signed in to perform this action",
+                    icon: 'error',
+                })
+                return
             }
 
             let formData = new FormData();
@@ -215,12 +234,20 @@ export default {
 
             axios.post('http://localhost:4000/api/v1/shows/'+ sh.id +'/favourite/user/' + userId, formData)
                   .then((response) => {
-                      console.log('sub added')
+                      this.$swal.fire({
+                          text: "Added to Favourites!",
+                          icon: 'success',
+                      })
                       console.log(response)
                   }).catch((err) => {
-                console.log('something went wrong error', err)
-                this.error_message = err;
-            })
+                        console.log('something went wrong error', err)
+                        this.error_message = err;
+                        this.$swal.fire({
+                            title: "Error",
+                            text: err.response.data.message,
+                            icon: 'error',
+                        })
+                    })
         },
 
         rate(sh){
@@ -229,11 +256,21 @@ export default {
             if(this.$store.getters.isLoggedIn){
                 userId = this.$store.getters.userDetails.id
             } else {
-                this.$router.push({name: 'login'})
+                this.$swal.fire({
+                    title: "Error",
+                    text: "You have to be signed in to perform this action",
+                    icon: 'error',
+                })
+                return
             }
 
             if(this.rate_amount == '' || !this.rate_amount){
-                alert("Please pick a rating")
+                this.$swal.fire({
+                    title: "Error",
+                    text: "Please pick a rating",
+                    icon: 'error',
+                })
+                return
             }
 
             let rateData = {};
@@ -244,18 +281,43 @@ export default {
 
             axios.post('http://localhost:4000/api/v1/shows/'+ sh.id +'/ratings/user/' + userId, rateData)
                   .then((response) => {
-                      console.log('rate added')
+                      this.$swal.fire({
+                          text: "Rated!",
+                          icon: 'success',
+                      })
                       console.log(response)
                   }).catch((err) => {
-                console.log('something went wrong error', err)
-                this.error_message = err;
-            })
+                    console.log('something went wrong error', err)
+                    this.error_message = err;
+                    this.$swal.fire({
+                        title: "Error",
+                        text: err.response.data.message,
+                        icon: 'error',
+                    })
+                })
         }
     }
 }
 
 </script>
 <style>
+.overlay {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    background: rgba(0,0,0,.5);
+    -moz-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    position: absolute;
+    top:0;
+}
+
+.overlay {
+    opacity: 1;
+}
 .modal {
     display: none;
     align-items: center;
@@ -325,6 +387,12 @@ export default {
     border-top: 3px solid #10b981;
     border-left: 3px solid #10b981;
     border-right: 3px solid #10b981;
+}
+
+@media screen and (min-height: 1024px) {
+.poster-div{
+     min-height: 650px;
+    }
 }
 
 

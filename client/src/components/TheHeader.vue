@@ -1,11 +1,12 @@
 <template>
-    <div id="nav" class="flex bg-green-500 text-white justify-between">
+    <div id="nav" class="nav flex bg-green-500 text-white justify-between">
 
-      <div class="flex items-center justify-center  nav-link p-6">
-          <router-link :to="{ name : 'home' }">MOVIES AND TV</router-link>
+      <div class="relative flex items-center justify-center  p-6">
+          <router-link :to="{ name : 'home' }" class="nav-link h-full px-2">MOVIES AND TV</router-link>
+          <div class="hamburger-div" id="NavBarToggle"><i class="fas fa-bars"></i></div>
       </div>
 
-      <div class="flex">
+      <div id="nav-links" class="nav-links flex">
 
           <template v-if="!this.$store.getters.isLoggedIn">
               <div class="nav-link p-6">
@@ -24,7 +25,7 @@
             <div class="nav-link p-6">
                 <router-link :to="{ name: 'favourites'}">Favourites</router-link>
             </div>
-            <div class="nav-link p-6">
+            <div class="p-6">
                 <p>{{ userDetails.username }}</p>
             </div>
             <div class="nav-link p-6">
@@ -50,6 +51,20 @@ export default {
         return{
             logged_in: window.localStorage.getItem('movie_token')
         }
+    },
+    mounted(){
+        const NavBar = document.getElementById('nav-links')
+        const NavBarToggle = document.getElementById('NavBarToggle')
+        NavBarToggle.addEventListener('click', () => {
+            let nav_display = NavBar.style.display
+            if(nav_display != "none"){
+                NavBar.style.display = "none"
+            } else {
+                NavBar.style.display = "flex"
+                // NavBar.style.display = "flex"
+            }
+        })
+
     },
     computed: {
 
@@ -85,11 +100,48 @@ export default {
   padding: 0;
   margin: 0;
 }
+.nav{
+    flex-direction: column;
+}
+
+.nav-links{
+    display: none;
+    flex-direction: column;
+}
+
 .nav-link:hover{
    color: #10b981;
     background: white;
 }
 .nav-link a:focus, .nav-link a:hover  {
     text-decoration: none;
+}
+
+.hamburger-div {
+    cursor: pointer;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media screen and (min-width: 1024px) {
+    .nav{
+        flex-direction: row;
+    }
+
+    .hamburger-div{
+        display: none;
+    }
+
+    .nav-links{
+        display: flex;
+        flex-direction: row;
+    }
 }
 </style>
