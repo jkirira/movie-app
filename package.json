@@ -64,7 +64,7 @@
     "help": "webpack -h",
     "postinstall": "npm run build",
     "nodemon-api": "nodemon --exec npm run api",
-    "api": "nodemon index.js"
+    "api": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",

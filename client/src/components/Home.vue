@@ -17,7 +17,7 @@
 
         <div class="container px-5 py-12 xl:mx-4">
             <div class="flex flex-col w-full mb-6 ">
-                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">TRENDING<i class="fa-solid fa-fire m-2"></i></h1>
+                <h1 class="text-2xl font-medium title-font mb-4 text-white">TRENDING<i class="fa-solid fa-fire m-2"></i></h1>
             </div>
             <div class="movie-carousel gap-4 my-8 auto-cols-max">
                 <template v-if="latest">
@@ -31,7 +31,7 @@
 
         <div class="container px-5 py-12 xl:mx-4">
             <div class="flex flex-col w-full mb-6">
-                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">LATEST<i class="fa-regular fa-star m-2"></i></h1>
+                <h1 class="text-2xl font-medium title-font mb-4 text-white">LATEST<i class="fa-regular fa-star m-2"></i></h1>
             </div>
             <div class="movie-carousel gap-4 my-8 auto-cols-max">
                 <template v-if="latest">
@@ -45,7 +45,7 @@
 
         <div class="container px-5 py-12 xl:mx-4">
             <div class="flex flex-col w-full mb-6">
-                <h1 class="text-2xl font-medium title-font mb-4 text-gray-900">EXPLORE<i class="fa-regular fa-face-surprise m-2"></i></h1>
+                <h1 class="text-2xl font-medium title-font mb-4 text-white">EXPLORE<i class="fa-regular fa-face-surprise m-2"></i></h1>
             </div>
             <div class="movie-carousel gap-4 my-8 auto-cols-max">
                 <template v-if="latest">
